@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>My Game World 🌈</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌈</text></svg>">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- ====== Main Menu ====== -->
+    <main id="menu-container">
+        <header class="menu-header">
+            <h1 class="menu-title">
+                <span class="title-emoji">✨</span>
+                <span class="title-text">My Game World</span>
+                <span class="title-emoji">✨</span>
+            </h1>
+            <p class="menu-subtitle">Pick a game and have fun!</p>
+        </header>
+
+        <div class="game-grid" id="game-grid">
+            <!-- Game cards injected by JS -->
+        </div>
+
+        <footer class="menu-footer">
+            <p>Made with 💖 for the best little one</p>
+        </footer>
+    </main>
+
+    <!-- ====== Game View (shown when a game is launched) ====== -->
+    <div id="game-container">
+        <button class="btn-back" id="btn-back" aria-label="Back to menu">
+            <span>←</span> Menu
+        </button>
+        <div id="game-view">
+            <!-- Game content injected here -->
+        </div>
+    </div>
+
+    <!-- Scripts (load order matters: utils → base → main → games) -->
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/sound.js"></script>
+    <script src="js/base-game.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Individual games load after main.js -->
+    <script src="games/color-shapes.js"></script>
+    <script src="games/counting-fun.js"></script>
+    <script src="games/abc-adventure.js"></script>
+    <script src="games/memory-match.js"></script>
+    <script src="games/puzzle-world.js"></script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+/* ============================================
+   My Game World — Base Styles
+   A child-friendly, colorful, playful design
+   ============================================ */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Comic Sans MS', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-attachment: fixed;
+}
+
+/* ---------- 3D Background Canvas ---------- */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+#bg-canvas.loaded {
+    opacity: 1;
+}
+
+/* ---------- Main Menu ---------- */
+#menu-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px;
+}
+
+.menu-header {
+    text-align: center;
+    margin: 16px 0 28px;
+    animation: floatIn 0.8s ease-out;
+}
+
+.menu-title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.title-emoji {
+    display: inline-block;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.title-emoji:last-child {
+    animation-delay: 1s;
+}
+
+.menu-subtitle {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+}
+
+/* ---------- Game Grid ---------- */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 8px;
+}
+
+/* ---------- Game Card ---------- */
+.game-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+    border: 4px solid transparent;
+    animation: cardIn 0.6s ease-out both;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--card-color);
+    border-radius: 24px 24px 0 0;
+}
+
+.game-card:hover,
+.game-card:focus {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    border-color: var(--card-color);
+    outline: none;
+}
+
+.game-card:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.game-card-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    display: block;
+    animation: iconBounce 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.game-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--card-color);
+    margin-bottom: 6px;
+}
+
+.game-card-desc {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Staggered card entrance */
+.game-card:nth-child(1)  { animation-delay: 0.05s; }
+.game-card:nth-child(2)  { animation-delay: 0.10s; }
+.game-card:nth-child(3)  { animation-delay: 0.15s; }
+.game-card:nth-child(4)  { animation-delay: 0.20s; }
+.game-card:nth-child(5)  { animation-delay: 0.25s; }
+.game-card:nth-child(6)  { animation-delay: 0.30s; }
+.game-card:nth-child(7)  { animation-delay: 0.35s; }
+.game-card:nth-child(8)  { animation-delay: 0.40s; }
+.game-card:nth-child(9)  { animation-delay: 0.45s; }
+.game-card:nth-child(10) { animation-delay: 0.50s; }
+
+/* ---------- Menu Footer ---------- */
+.menu-footer {
+    margin-top: 32px;
+    margin-bottom: 12px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    animation: fadeIn 1s ease-out 0.5s both;
+}
+
+/* ---------- Game View ---------- */
+#game-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    display: none;
+}
+
+#game-container.active {
+    display: flex;
+    flex-direction: column;
+}
+
+#game-view {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#game-view canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ---------- Back Button ---------- */
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #764ba2;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    font-family: inherit;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-back:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    background: #fff;
+}
+
+.btn-back:active {
+    transform: scale(0.95);
+}
+
+/* ---------- Game Title Overlay ---------- */
+.game-title-overlay {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 32px;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    z-index: 5;
+    pointer-events: none;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Coming Soon Placeholder ---------- */
+.coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px;
+}
+
+.coming-soon-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+.coming-soon-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.coming-soon-text {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.coming-soon-btn {
+    background: #fff;
+    color: #764ba2;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    font-family: inherit;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.coming-soon-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.coming-soon-btn:active {
+    transform: scale(0.95);
+}
+
+/* ---------- Toast Notification ---------- */
+.toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 100;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    font-family: inherit;
+}
+
+.toast.toast-visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Animations ---------- */
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.25) rotate(15deg);
+    }
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .game-card {
+        padding: 22px 14px;
+        border-radius: 18px;
+    }
+
+    .game-card-icon {
+        font-size: 2.8rem;
+    }
+
+    .game-card-title {
+        font-size: 1.1rem;
+    }
+
+    .game-card-desc {
+        font-size: 0.8rem;
+    }
+
+    .menu-header {
+        margin: 8px 0 20px;
+    }
+
+    .btn-back {
+        top: 12px;
+        left: 12px;
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+
+    .game-title-overlay {
+        top: 60px;
+        font-size: 1.1rem;
+        padding: 8px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .game-card {
+        padding: 20px;
+    }
+
+    .menu-footer {
+        font-size: 0.8rem;
+    }
+}
+
+/* ---------- Utility ---------- */
+.hidden {
+    display: none !important;
+}
+
+/* Prevent text selection on interactive elements */
+.game-card,
+.btn-back,
+.coming-soon-btn {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch optimization: no hover effects on touch devices */
+@media (hover: none) {
+    .game-card:hover {
+        transform: none;
+    }
+}
